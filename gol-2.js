@@ -12,14 +12,32 @@
     VERSION: "2.0"
   };
 
+	// Will hold reference to Canvas element
+  var gol2_canvas = '';
+
+	// Canvas Id is required for init function, board width and height are optional,
+	// and default to 60 cells wide by 30 cells tall
+	gol2.init = function(targetCanvasId, newBoardCellWidth, newBoardCellHeight){
+		// Get Canvas object by Id
+		gol2_canvas = document.getElementById(targetCanvasId);
+
+		// Check that height or width are not undefined
+		if(newBoardCellWidth !== undefined){
+			// Set width of board 
+			gol2_boardCellWidth = newBoardCellWidth;
+		}
+		
+		if(newBoardCellHeight !== undefined){
+			// Set height of board
+			gol2_boardCellHeight = newBoardCellHeight;
+		};
+	};
+
   /////////////////////////////////////////////
   //  gol2 constants & gol2 setup
   /////////////////////////////////////////////
 
-  // References to <canvas> element
-  // Note: for gol2 to work, set the id of the <canvas>
-  //   element to "gol2_canvas".
-  var gol2_canvas = document.getElementById("gol2_canvas");
+  // Get Canvas element context to draw to
   var gol2_ctx = gol2_canvas.getContext('2d');   
 
   // Assign color to cell states
