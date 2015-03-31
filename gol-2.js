@@ -30,7 +30,7 @@
 		if(newBoardCellHeight !== undefined){
 			// Set height of board
 			gol2_boardCellHeight = newBoardCellHeight;
-		};
+		}
 	};
 
   /////////////////////////////////////////////
