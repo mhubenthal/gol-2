@@ -8,16 +8,19 @@
   // Define gol2 constructor
   // Canvas Id is required for new gol2 object, board width and height are optional,
   // and default to 60 cells wide by 30 cells tall
-  var Gol2 = function(targetCanvasId, newBoardCellWidth, newBoardCellHeight){      
+  var Gol2 = function(targetCanvasId, boardOptions){      
     // Current version
     this.version = {VERSION: "2.0"};
     // Get Canvas object by Id
     this.gol2_canvas = document.getElementById(targetCanvasId);
     // Get Canvas element context to draw to
     this.gol2_ctx = gol2_canvas.getContext('2d'); 
-    // Set cell width, height
-    this.gol2_boardCellWidth = newBoardCellWidth || 60;
-    this.gol2_boardCellHeight = newBoardCellHeight || 30;
+    // Set board options with custom or default values
+    boardOptions = boardOptions || {};
+    this.gol2_boardCellWidth = boardOptions.boardWidth || 60;
+    this.gol2_boardCellHeight = boardOptions.boardHeight || 30;
+    this.gol2_cellSize = boardOptions.cellSize || 10;
+    this.gol2_lifeSpeed = boardOptions.lifeSpeed || 250;
     // Assign color to cell states
     this.state0 = "rgb(255,255,255)"; // Dead cell
     this.state1 = "rgb(255,204,204)"; // Cell alive one cycle
@@ -37,8 +40,6 @@
     // (Grid lines are drawn at 1px wide)
     this.gol2_cellColor = this.state0;
     this.gol2_backgroundColor = this.state5;
-    this.gol2_cellSize = 10;
-    this.gol2_lifeSpeed = 250;
     this.gol2_intervalId = 0;
     // Set offset values for gol2 origin
     this.gol2_originX = 0;

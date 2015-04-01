@@ -1,9 +1,9 @@
 ###  Conway's Game of Life implemented in JavaScript using the ```<canvas>``` tag.
 
 Include ```<canvas id="yourUniqueId"></canvas>``` on your page. 
-Include the gol-2.js script, call ```var yourGol2 = new Gol2('yourUniqueId', numCellsWide, numCellsTall);``` to instantiate your object. 
+Include the gol-2.js script, call ```var yourGol2 = new Gol2('yourUniqueId', {boardWidth: 60, boardHeight: 30, cellSize: 10, lifeSpeed: 250});``` to instantiate your object. The 'options' object is optional, and any number of the options may be specified. (The default values are those listed in the previous code snippet.)
 
-(Note: Extremely large boards have not been tested for performance. The default size is 60 cells wide by 30 cells tall.)
+(Note: Extremely large boards have not been tested for performance.)
 
 Call ```yourGol2.setupLife()``` first to load the blank board.
 
