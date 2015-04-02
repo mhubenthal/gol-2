@@ -76,31 +76,17 @@
     this.gol2_drawLife = function(){
       var x=0, y=0;
       var xPos = 1, yPos = 1;
-      // Use board1 if current
-      if(this.gol2_board1isCurrent){
-        for(xPos=1;xPos<this.gol2_backgroundWidth;xPos+=(this.gol2_cellSize+1)){
-          y=0;
-          for(yPos=1;yPos<this.gol2_backgroundHeight;yPos+=(this.gol2_cellSize+1)){
-            // Fill cell based on state of cell
-            this.gol2_ctx.fillStyle = this.gol2_stateColors[this.gol2_lifeBoard1[y][x].state];
-            this.gol2_ctx.fillRect(xPos,yPos,this.gol2_cellSize,this.gol2_cellSize);
-            y++;
-          }
-          x++;
+      // Draw life based on current board
+      var currentBoard = this.gol2_board1isCurrent ? this.gol2_lifeBoard1 : this.gol2_lifeBoard2;
+      for(xPos=1;xPos<this.gol2_backgroundWidth;xPos+=(this.gol2_cellSize+1)){
+        y=0;
+        for(yPos=1;yPos<this.gol2_backgroundHeight;yPos+=(this.gol2_cellSize+1)){
+          // Fill cell based on state of cell
+          this.gol2_ctx.fillStyle = this.gol2_stateColors[currentBoard[y][x].state];
+          this.gol2_ctx.fillRect(xPos,yPos,this.gol2_cellSize,this.gol2_cellSize);
+          y++;
         }
-      } 
-      // Else, board2 is current 
-      if(!this.gol2_board1isCurrent){
-        for(xPos=1;xPos<this.gol2_backgroundWidth;xPos+=(this.gol2_cellSize+1)){
-          y=0;
-          for(yPos=1;yPos<this.gol2_backgroundHeight;yPos+=(this.gol2_cellSize+1)){
-            // Fill cell based on state of cell
-            this.gol2_ctx.fillStyle = this.gol2_stateColors[this.gol2_lifeBoard2[y][x].state];
-            this.gol2_ctx.fillRect(xPos,yPos,this.gol2_cellSize,this.gol2_cellSize);
-            y++;
-          }
-          x++;
-        }
+        x++;
       }
     }; 
 
@@ -259,7 +245,7 @@
         if(n===3){
           nextBoard[y][x].state = 1; // Set next board to live cell
         }
-        if(n!==3){
+        else{
           nextBoard[y][x].state = 0; // Set next board to dead cell
         }
       }
@@ -276,30 +262,19 @@
       // N holds number of live neighbors of current cell
       var n = 0;
       var xPos = 0, yPos = 0;
-      // Check which board is current
-      // Board 1 is current
-      if(this.gol2_board1isCurrent){
-        for(xPos=0;xPos<this.gol2_boardCellWidth;xPos++){
-          for(yPos=0;yPos<this.gol2_boardCellHeight;yPos++){
-            n = 0;
-            n = this.gol2_getNeighborCount(this.gol2_lifeBoard1, yPos, xPos);
-            this.gol2_setNextGen(this.gol2_lifeBoard1,this.gol2_lifeBoard2,n,yPos,xPos);
-          }
+      // Dynamically obtain current/next boards
+      var currentBoard = this.gol2_board1isCurrent ? this.gol2_lifeBoard1 : this.gol2_lifeBoard2;
+      var nextBoard = this.gol2_board1isCurrent ? this.gol2_lifeBoard2 : this.gol2_lifeBoard1;
+      // Check current board, set next board
+      for(xPos=0;xPos<this.gol2_boardCellWidth;xPos++){
+        for(yPos=0;yPos<this.gol2_boardCellHeight;yPos++){
+          n = 0;
+          n = this.gol2_getNeighborCount(currentBoard, yPos, xPos);
+          this.gol2_setNextGen(currentBoard,nextBoard,n,yPos,xPos);
         }
-        this.gol2_clearLife(this.gol2_lifeBoard1);
       }
-      // Else board 2 is current
-      if(!this.gol2_board1isCurrent){
-        for(xPos=0;xPos<this.gol2_boardCellWidth;xPos++){
-          for(yPos=0;yPos<this.gol2_boardCellHeight;yPos++){
-            n=0;
-            n = this.gol2_getNeighborCount(this.gol2_lifeBoard2, yPos, xPos);
-            this.gol2_setNextGen(this.gol2_lifeBoard2,this.gol2_lifeBoard1,n,yPos,xPos);
-          }
-        }
-        this.gol2_clearLife(this.gol2_lifeBoard2);
-      }
-      // Reset current board
+      this.gol2_clearLife(currentBoard);
+      // Reset current board flag
       this.gol2_board1isCurrent = !this.gol2_board1isCurrent;
     };
 
@@ -328,10 +303,8 @@
     this.gol2_getPosition = function(event){
       // Get reference to proper 'this' context
       var self = this;
-      var currentBoard = self.gol2_lifeBoard1;
-      if(!self.gol2_board1isCurrent){
-        currentBoard = self.gol2_lifeBoard2;
-      }
+      // Get current board
+      var currentBoard = self.gol2_board1isCurrent ? self.gol2_lifeBoard1 : self.gol2_lifeBoard2;
       // Get mouse position
       var x = event.pageX;
       var y = event.pageY;
@@ -415,19 +388,13 @@
     function getRandomCell() {
       return Math.floor(Math.random() * 2);
     }
-    if(this.gol2_board1isCurrent){
-      for(yPos=quarterBoardHeight;yPos<=(2*quarterBoardHeight);yPos++){
-        for(xPos=quarterBoardWidth;xPos<=(2*quarterBoardWidth);xPos++){
-          this.gol2_lifeBoard1[yPos][xPos] = {state: getRandomCell()};
-        }
+    // Get current board
+    var currentBoard = this.gol2_board1isCurrent ? this.gol2_lifeBoard1 : this.gol2_lifeBoard2;
+    // Draw random group of cells
+    for(yPos=quarterBoardHeight;yPos<=(2*quarterBoardHeight);yPos++){
+      for(xPos=quarterBoardWidth;xPos<=(2*quarterBoardWidth);xPos++){
+        currentBoard[yPos][xPos] = {state: getRandomCell()};
       }
-    }
-    if(!this.gol2_board1isCurrent){
-      for(yPos=quarterBoardHeight;yPos<=(2*quarterBoardHeight);yPos++){
-        for(xPos=quarterBoardWidth;xPos<=(2*quarterBoardWidth);xPos++){
-          this.gol2_lifeBoard2[yPos][xPos] = {state: getRandomCell()};
-        }
-      }  
     }
     this.gol2_drawLife();
   };
