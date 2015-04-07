@@ -110,7 +110,7 @@
     };
 
     // Get number of live neighbors, looking at the grid as a toroidal sphere
-    _this.gol2_getNeighborCount = function(array, y, x) {
+    _this.gol2_getNeighborCount = function(arr, y, x) {
       var liveNabes = 0;
       function convertState(stateValue) {
         // Convert state value to 1 or 0
@@ -119,97 +119,97 @@
       // Check north
       function checkNorth() {
         if (y === 0) {
-          liveNabes += convertState(array.slice(y - 1)[0][x].state);
+          liveNabes += convertState(arr.slice(y - 1)[0][x].state);
         }
         if (y !== 0) {
-          liveNabes += convertState(array.slice(y - 1, y)[0][x].state);
+          liveNabes += convertState(arr.slice(y - 1, y)[0][x].state);
         } 
       }
       // Check south
       function checkSouth() {
-        if (y === array.length - 1) {
-          liveNabes += convertState(array.slice(0, 1)[0][x].state);
+        if (y === arr.length - 1) {
+          liveNabes += convertState(arr.slice(0, 1)[0][x].state);
         }
-        if (y !== array.length - 1) {
-          liveNabes += convertState(array.slice(y + 1, y + 2)[0][x].state);
+        if (y !== arr.length - 1) {
+          liveNabes += convertState(arr.slice(y + 1, y + 2)[0][x].state);
         }
       } 
       // Check west
       function checkWest() {
         if (x === 0) {
-          liveNabes += convertState(array[y][array[0].length - 1].state);
+          liveNabes += convertState(arr[y][arr[0].length - 1].state);
         }
         if (x !== 0) {
-          liveNabes += convertState(array[y][x - 1].state);
+          liveNabes += convertState(arr[y][x - 1].state);
         } 
       } 
       // Check east
       function checkEast() {
-        if (x === array[0].length - 1) {
-          liveNabes += convertState(array[y][0].state);
+        if (x === arr[0].length - 1) {
+          liveNabes += convertState(arr[y][0].state);
         }
-        if (x !== array[0].length - 1) {
-          liveNabes += convertState(array[y][x + 1].state);
+        if (x !== arr[0].length - 1) {
+          liveNabes += convertState(arr[y][x + 1].state);
         }  
       }
       // Check northwest
       function checkNorthwest() {
         if (y === 0 && x !== 0) {
-          liveNabes += convertState(array.slice(y - 1)[0][x - 1].state);
+          liveNabes += convertState(arr.slice(y - 1)[0][x - 1].state);
         }
         if (y !== 0 && x !== 0) {
-          liveNabes += convertState(array[y - 1][x - 1].state);
+          liveNabes += convertState(arr[y - 1][x - 1].state);
         } 
         if (y === 0 && x === 0) { 
-          liveNabes += convertState(array[array.length - 1][array[0].length - 1].state);
+          liveNabes += convertState(arr[arr.length - 1][arr[0].length - 1].state);
         }
         if (y !== 0 && x === 0) {
-          liveNabes += convertState(array[y - 1][array[0].length - 1].state);
+          liveNabes += convertState(arr[y - 1][arr[0].length - 1].state);
         } 
       }
       // Check northeast
       function checkNortheast() {
-        if (y === 0 && x !== array[0].length - 1) {
-          liveNabes += convertState(array[array.length - 1][x + 1].state);
+        if (y === 0 && x !== arr[0].length - 1) {
+          liveNabes += convertState(arr[arr.length - 1][x + 1].state);
         }
-        if (y !== 0 && x !== array[0].length - 1) {
-          liveNabes += convertState(array[y - 1][x + 1].state);
+        if (y !== 0 && x !== arr[0].length - 1) {
+          liveNabes += convertState(arr[y - 1][x + 1].state);
         } 
-        if (y === 0 && x === array[0].length - 1) {
-          liveNabes += convertState(array[array.length - 1][0].state);
+        if (y === 0 && x === arr[0].length - 1) {
+          liveNabes += convertState(arr[arr.length - 1][0].state);
          }
-        if (y !== 0 && x === array[0].length - 1) {
-          liveNabes += convertState(array[y - 1][0].state);
+        if (y !== 0 && x === arr[0].length - 1) {
+          liveNabes += convertState(arr[y - 1][0].state);
         } 
       }
       // Check southwest
       function checkSouthwest() {
-        if (y !== array.length - 1 && x !== 0) {
-          liveNabes += convertState(array[y + 1][x - 1].state);
+        if (y !== arr.length - 1 && x !== 0) {
+          liveNabes += convertState(arr[y + 1][x - 1].state);
         }
-        if (y !== array.length - 1 && x === 0) {
-          liveNabes += convertState(array[y + 1][array[0].length - 1].state);
+        if (y !== arr.length - 1 && x === 0) {
+          liveNabes += convertState(arr[y + 1][arr[0].length - 1].state);
         } 
-        if (y === array.length - 1 && x === array[0].length - 1) {
-          liveNabes += convertState(array[0][array[0].length - 1].state);
+        if (y === arr.length - 1 && x === arr[0].length - 1) {
+          liveNabes += convertState(arr[0][arr[0].length - 1].state);
         }
-        if (y === array.length - 1 && x !== 0) {
-          liveNabes += convertState(array[0][x - 1].state);
+        if (y === arr.length - 1 && x !== 0) {
+          liveNabes += convertState(arr[0][x - 1].state);
         }
       }
       // Check southeast
       function checkSoutheast() {
-        if (y !== array.length - 1 && x !== array[0].length - 1) {
-          liveNabes += convertState(array[y+1][x+1].state);
+        if (y !== arr.length - 1 && x !== arr[0].length - 1) {
+          liveNabes += convertState(arr[y+1][x+1].state);
         }
-        if (y !== array.length - 1 && x === array[0].length - 1) {
-          liveNabes += convertState(array[y + 1][0].state);
+        if (y !== arr.length - 1 && x === arr[0].length - 1) {
+          liveNabes += convertState(arr[y + 1][0].state);
         }
-        if (y === array.length - 1 && x === array[0].length - 1) {
-          liveNabes += convertState(array[0][0].state);
+        if (y === arr.length - 1 && x === arr[0].length - 1) {
+          liveNabes += convertState(arr[0][0].state);
         }
-        if (y === array.length - 1 && x !== array[0].length - 1) {
-          liveNabes += convertState(array[0][x + 1].state);
+        if (y === arr.length - 1 && x !== arr[0].length - 1) {
+          liveNabes += convertState(arr[0][x + 1].state);
         }
       }
       // Check cardinal directions
